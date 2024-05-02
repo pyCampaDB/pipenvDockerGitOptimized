@@ -32,13 +32,11 @@ def git_clone():
     try:runSubprocess(f'git clone {url}',shell= True,check=True)
     except CalledProcessError as cp:print(f'An error occurred: {cp.returncode}')
 def git_push():
-    remote = input('Input the remote name: ');branch = input('Input the branch name: ');first_commit = input('Input if is your first commit [Y/n]: ');my_git = input('Input your repository name: ');username = getenv('GITHUB_USERNAME')
-    if first_commit in ['Y, y']:
-        try:runSubprocess(f'git remote add {remote.strip()} "https://github.com/{username.strip()}/{my_git.strip()}.git"',shell=True, check=True, capture_output=True)
-        except CalledProcessError as cp:print(f'An error occurred: {cp.returncode}')
-    else:
-        try:runSubprocess(f'git push {remote} {branch}',shell=True,check=True)
-        except CalledProcessError as cp:print(f'An error occurred: {cp.returncode}')
+    remote = input('Input the remote name: ');first_commit = input('Input if is your first commit [Y/n]: ')
+    try:    
+        if first_commit in ['Y', 'y']:my_git = input('Input your repository name: ');username = getenv('GITHUB_USERNAME');runSubprocess(f'git remote add {remote.strip()} "https://github.com/{username.strip()}/{my_git.strip()}.git"',shell=True, check=True, capture_output=True)
+        else:branch = input('Input the branch name: ');runSubprocess(f'git push {remote} {branch}',shell=True,check=True)
+    except CalledProcessError as cp:print(f'An error occurred: {cp.returncode}')
 def git_branch():
     try:runSubprocess('git branch',shell=True,check=True)
     except CalledProcessError as cp:print(f'An error occurred: {cp.returncode}')
